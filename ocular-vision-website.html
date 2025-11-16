@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project: Ocular Vision - Team Project</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Base styles for the dark mode and font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #05080a; /* Deep, near-black blue */
+            color: #c0d8f0;
+        }
+        
+        /* Custom font import */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+
+        /* Glassmorphism effect for cards */
+        .glass-card {
+            background: rgba(10, 20, 35, 0.4); /* Translucent dark blue */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 190, 255, 0.2);
+            border-radius: 1.5rem; /* 24px */
+            transition: all 0.3s ease;
+        }
+
+        .glass-card-hover:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 212, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
+        }
+        
+        /* Hero gradient text */
+        .hero-text-gradient {
+            background: linear-gradient(90deg, #00d4ff, #00ffaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        /* Glow effect for buttons */
+        .btn-glow {
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3), 0 0 30px rgba(0, 212, 255, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.6), 0 0 50px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Tech stack icon glow */
+        .tech-icon {
+            transition: all 0.3s ease-in-out;
+        }
+        .tech-icon:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.7));
+        }
+        
+        /* Scroll-reveal animations (hidden by default) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom scrollbar (for a high-tech feel) */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #05080a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #00d4ff, #00ffaa);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="w-full overflow-x-hidden">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-20 items-center justify-between">
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-2xl font-bold hero-text-gradient">Ocular Vision Project</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#problem" class="text-gray-300 hover:text-cyan-400 px-3 py-2 rounded-md text-sm font-medium">The Problem</a>
+                        <a href="#solution" class="text-gray-300 hover:text-cyan-400 px-3 py-2 rounded-md text-sm font-medium">The Solution</a>
+                        <a href="#demo" class="text-gray-300 hover:text-cyan-400 px-3 py-2 rounded-md text-sm font-medium">Live Demos</a>
+                        <a href="#performance" class="text-gray-300 hover:text-cyan-400 px-3 py-2 rounded-md text-sm font-medium">Performance</a>
+                        <a href="#tech" class="text-gray-300 hover:text-cyan-400 px-3 py-2 rounded-md text-sm font-medium">Tech Stack</a>
+                        <a href="#team" class="text-gray-300 hover:text-cyan-400 px-3 py-2 rounded-md text-sm font-medium">The Team</a>
+                        <a href="#future" class="text-gray-300 hover:text-cyan-400 px-3 py-2 rounded-md text-sm font-medium">Next Steps</a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <a href="https://github.com/Jeanstarjb/ocular-disease-detection" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-6 py-2 border border-cyan-400 text-sm font-medium rounded-full text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 transition-colors btn-glow">
+                        View on GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="relative h-screen min-h-[800px] flex items-center justify-center text-center overflow-hidden">
+            <!-- Canvas Animation Background -->
+            <canvas id="neural-canvas" class="absolute top-0 left-0 w-full h-full z-0 opacity-40"></canvas>
+            
+            <div class="relative z-10 p-4">
+                <h1 class="text-5xl font-extrabold tracking-tight text-white sm:text-6xl md:text-8xl">
+                    <span class="block hero-text-gradient">Project: Ocular Vision</span>
+                </h1>
+                <p class="mt-6 max-w-lg mx-auto text-xl text-gray-300 sm:max-w-3xl">
+                    A **DenseNet-121** model trained on **37,649 fundus images** to detect 8 ocular pathologies and address the scalability crisis in ophthalmology.
+                </p>
+
+                <!-- Key Metrics -->
+                <div class="mt-10 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="glass-card p-6">
+                        <p class="text-lg font-medium text-cyan-400">Test Accuracy</p>
+                        <p class="text-5xl font-extrabold text-white mt-2">94.69%</p>
+                    </div>
+                    <div class="glass-card p-6">
+                        <p class="text-lg font-medium text-cyan-400">Test AUC Score</p>
+                        <p class="text-5xl font-extrabold text-white mt-2">0.967</p>
+                    </div>
+                </div>
+
+                <div class="mt-12 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="#demo" class="w-full sm:w-auto flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-gray-900 bg-cyan-400 hover:bg-cyan-300 transition-colors btn-glow md:py-4 md:text-lg md:px-10">
+                        View Live Demos
+                    </a>
+                    <a href="https://github.com/Jeanstarjb/ocular-disease-detection" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto flex items-center justify-center px-8 py-3 border border-cyan-400 text-base font-medium rounded-full text-cyan-400 bg-transparent hover:bg-cyan-400 hover:text-gray-900 transition-colors md:py-4 md:text-lg md:px-10">
+                        View Code on GitHub
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Problem Section -->
+        <section id="problem" class="py-20 sm:py-32">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="lg:text-center reveal">
+                    <h2 class="text-base font-semibold tracking-wide uppercase text-cyan-400">The Problem</h2>
+                    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
+                        The Scalability Crisis in Ophthalmology
+                    </p>
+                    <p class="mt-4 max-w-2xl text-xl text-gray-300 lg:mx-auto">
+                        Diseases like Diabetic Retinopathy and Glaucoma are leading causes of preventable blindness. Diagnosis relies on manual screening by specialist ophthalmologists, a process that is slow, costly, and inaccessible to remote populations, creating a critical diagnostic bottleneck.
+                    </p>
+                </div>
+
+                <div class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-10 items-center reveal">
+                    <div class="glass-card p-8 shadow-2xl">
+                        <h3 class="text-2xl font-bold text-white mb-4">The Data Challenge</h3>
+                        <p class="text-gray-300 mb-4">
+                            Analyzing retinal fundus images is a highly specialized skill. Our challenge was to build an automated system that could analyze these complex images with clinical-grade accuracy, reducing the bottleneck and enabling early detection.
+                        </p>
+                        <p class="text-gray-300">
+                            Our team consolidated and cleaned a dataset of **37,649 images** to train a robust model.
+                        </p>
+                    </div>
+                    <div class="text-center">
+                        <!-- UPDATED: Replaced placeholder with a more descriptive one -->
+                        <img src="https://placehold.co/600x400/0a1423/FFF?text=Sample+Retinal+Scan+(Normal)" alt="Retinal Scan" class="rounded-2xl shadow-2xl border border-cyan-800"
+                        onerror="this.src='https://placehold.co/600x400/0a1423/FFF?text=Sample+Retinal+Scan'">
+                        <p class="text-sm text-gray-400 mt-2">Example of a high-resolution fundus image used for training.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solution Section -->
+        <section id="solution" class="py-20 sm:py-32 bg-gray-900/30">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center reveal">
+                    <h2 class="text-base font-semibold tracking-wide uppercase text-cyan-400">The Solution</h2>
+                    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
+                        A Clinical Decision Support System (CDSS)
+                    </p>
+                    <p class="mt-4 max-w-2xl text-xl text-gray-300 lg:mx-auto">
+                        Our team engineered an end-to-end Machine Learning model that classifies retinal scans, identifying 8 distinct pathologies with high accuracy.
+                    </p>
+                </div>
+
+                <!-- NEW: Model Architecture Diagram -->
+                <div class="mt-16 reveal">
+                    <h3 class="text-2xl font-bold text-center text-white mb-8">Model Architecture</h3>
+                    <div class="glass-card p-8">
+                        <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                            <!-- Input -->
+                            <div class="flex flex-col items-center text-center">
+                                <div class="p-4 bg-cyan-900 border-2 border-cyan-400 rounded-lg">
+                                    <p class="font-mono text-white">Image (224, 224, 3)</p>
+                                </div>
+                                <p class="text-sm text-cyan-400 mt-2">Input Image</p>
+                            </div>
+                            <p class="text-3xl font-thin text-cyan-400">&rarr;</p>
+                            <!-- Base Model -->
+                            <div class="flex flex-col items-center text-center">
+                                <div class="p-4 bg-gray-800 border-2 border-gray-600 rounded-lg">
+                                    <p class="font-mono text-white">DenseNet-121 Base</p>
+                                </div>
+                                <p class="text-sm text-gray-400 mt-2">Transfer Learning</p>
+                            </div>
+                            <p class="text-3xl font-thin text-cyan-400">&rarr;</p>
+                            <!-- Head -->
+                            <div class="flex flex-col items-center text-center">
+                                <div class="p-4 bg-gray-800 border-2 border-gray-600 rounded-lg">
+                                    <p class="font-mono text-white">Global Pooling + Dense(512)</p>
+                                </div>
+                                <p class="text-sm text-gray-400 mt-2">Classification Head</p>
+                            </div>
+                            <p class="text-3xl font-thin text-cyan-400">&rarr;</p>
+                            <!-- Output -->
+                            <div class="flex flex-col items-center text-center">
+                                <div class="p-4 bg-green-900 border-2 border-green-400 rounded-lg">
+                                    <p class="font-mono text-white">Sigmoid (8 classes)</p>
+                                </div>
+                                <p class="text-sm text-green-400 mt-2">Multi-Label Output</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Step 1 -->
+                    <div class="glass-card p-8 text-center reveal glass-card-hover" style="transition-delay: 100ms;">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-cyan-900 border-2 border-cyan-400 mx-auto mb-6">
+                            <svg class="h-8 w-8 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">1. Data Preprocessing</h3>
+                        <p class="text-gray-300">
+                            We cleaned, normalized, and augmented a dataset of **37,649** fundus images, handling significant class imbalances to prepare a robust dataset for training.
+                        </p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="glass-card p-8 text-center reveal glass-card-hover" style="transition-delay: 200ms;">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-cyan-900 border-2 border-cyan-400 mx-auto mb-6">
+                            <svg class="h-8 w-8 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 5V3m0 18v-2M12 12a3 3 0 110-6 3 3 0 010 6z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">2. Model Training</h3>
+                        <p class="text-gray-300">
+                            We trained and fine-tuned a **DenseNet-121** Convolutional Neural Network (CNN) using **Keras/TensorFlow**, leveraging transfer learning for state-of-the-art feature extraction.
+                        </p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="glass-card p-8 text-center reveal glass-card-hover" style="transition-delay: 300ms;">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-cyan-900 border-2 border-cyan-400 mx-auto mb-6">
+                            <svg class="h-8 w-8 text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">3. Classification</h3>
+                        <p class="text-gray-300">
+                            Our final model classifies images with **94.69% accuracy**, providing a reliable, automated "second opinion" to support medical professionals.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 8 Pathologies -->
+                <div class="mt-20 max-w-5xl mx-auto reveal">
+                    <h3 class="text-2xl font-bold text-center text-white mb-8">Detecting 8 Ocular Pathologies</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div class="glass-card p-4"><p class="font-medium text-cyan-400">Normal (Healthy)</p></div>
+                        <div class="glass-card p-4"><p class="font-medium text-white">Diabetic Retinopathy</p></div>
+                        <div class="glass-card p-4"><p class="font-medium text-white">Glaucoma</p></div>
+                        <div class="glass-card p-4"><p class="font-medium text-white">Cataract</p></div>
+                        <div class="glass-card p-4"><p class="font-medium text-white">AMD</p></div>
+                        <div class="glass-card p-4"><p class="font-medium text-white">Hypertension</p></div>
+                        <div class="glass-card p-4"><p class="font-medium text-white">Myopia</p></div>
+                        <div class="glass-card p-4"><p class="font-medium text-gray-400">Other Abnormalities</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Demos Section -->
+        <section id="demo" class="py-20 sm:py-32">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center reveal">
+                    <h2 class="text-base font-semibold tracking-wide uppercase text-cyan-400">Live Demos</h2>
+                    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
+                        See Our Work in Action
+                    </p>
+                    <p class="mt-4 max-w-2xl text-xl text-gray-300 lg:mx-auto">
+                        We deployed our model as a live web application and created an interactive dashboard for performance analytics.
+                    </p>
+                </div>
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Streamlit App -->
+                    <div class="glass-card p-8 flex flex-col items-center text-center reveal glass-card-hover">
+                        <!-- UPDATED: Replaced SVG with a screenshot placeholder -->
+                        <img src="https://placehold.co/600x400/0a1423/FFF?text=Screenshot+of+Streamlit+App" alt="Streamlit App Screenshot" class="rounded-lg shadow-lg mb-6 border border-cyan-700"
+                        onerror="this.src='https://placehold.co/600x400/0a1423/FFF?text=Streamlit+App+Screenshot'">
+                        <h3 class="mt-4 text-2xl font-bold text-white">Live Streamlit App</h3>
+                        <p class="mt-2 text-gray-300">Upload a fundus image and get a real-time multi-label classification from our model.</p>
+                        <a href="https://a-teamstrivetowin.streamlit.app/" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-gray-900 bg-cyan-400 hover:bg-cyan-300 transition-colors btn-glow">
+                            Launch Web App
+                        </a>
+                    </div>
+                    <!-- Tableau Dashboard -->
+                    <div class="glass-card p-8 flex flex-col items-center text-center reveal glass-card-hover">
+                        <!-- UPDATED: Replaced SVG with a screenshot placeholder -->
+                        <img src="https://placehold.co/600x400/0a1423/FFF?text=Screenshot+of+Tableau+Dashboard" alt="Tableau Dashboard Screenshot" class="rounded-lg shadow-lg mb-6 border border-cyan-700"
+                        onerror="this.src='https://placehold.co/600x400/0a1423/FFF?text=Tableau+Dashboard+Screenshot'">
+                        <h3 class="mt-4 text-2xl font-bold text-white">Tableau Dashboard</h3>
+                        <p class="mt-2 text-gray-300">An interactive dashboard analyzing our model's performance and the dataset's demographics.</p>
+                        <a href="https://public.tableau.com/app/profile/teresia.ndung.u/viz/AI-drivenoculardiseasedetection/Dashboard1?publish=yes" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-gray-900 bg-cyan-400 hover:bg-cyan-300 transition-colors btn-glow">
+                            View Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Performance Section -->
+        <section id="performance" class="py-20 sm:py-32 bg-gray-900/30">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center reveal">
+                    <h2 class="text-base font-semibold tracking-wide uppercase text-cyan-400">Performance Deep Dive</h2>
+                    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
+                        Clinically Relevant Accuracy
+                    </p>
+                    <p class="mt-4 max-w-2xl text-xl text-gray-300 lg:mx-auto">
+                        Our model excels at identifying specific, high-risk diseases, achieving an overall Test AUC of 0.967.
+                    </p>
+                </div>
+                <div class="mt-16 reveal max-w-4xl mx-auto">
+                    <div class="glass-card p-8">
+                        <h3 class="text-2xl font-bold text-white mb-6 text-center">Per-Class F1-Scores (Test Set)</h3>
+                        <div class="space-y-4">
+                            <!-- Cataract -->
+                            <div class="flex items-center">
+                                <span class="text-cyan-400 font-medium w-28">Cataract</span>
+                                <div class="flex-1 bg-gray-700 rounded-full h-4 mx-4">
+                                    <div class="bg-cyan-400 h-4 rounded-full" style="width: 91%"></div>
+                                </div>
+                                <span class="text-white font-bold text-lg">0.91</span>
+                            </div>
+                            <!-- Myopia -->
+                            <div class="flex items-center">
+                                <span class="text-white font-medium w-28">Myopia</span>
+                                <div class="flex-1 bg-gray-700 rounded-full h-4 mx-4">
+                                    <div class="bg-cyan-400 h-4 rounded-full" style="width: 88%"></div>
+                                </div>
+                                <span class="text-white font-bold text-lg">0.88</span>
+                            </div>
+                            <!-- AMD -->
+                            <div class="flex items-center">
+                                <span class="text-white font-medium w-28">AMD</span>
+                                <div class="flex-1 bg-gray-700 rounded-full h-4 mx-4">
+                                    <div class="bg-cyan-400 h-4 rounded-full" style="width: 86%"></div>
+                                </div>
+                                <span class="text-white font-bold text-lg">0.86</span>
+                            </div>
+                            <!-- Glaucoma -->
+                            <div class="flex items-center">
+                                <span class="text-white font-medium w-28">Glaucoma</span>
+                                <div class="flex-1 bg-gray-700 rounded-full h-4 mx-4">
+                                    <div class="bg-cyan-400 h-4 rounded-full" style="width: 83%"></div>
+                                </div>
+                                <span class="text-white font-bold text-lg">0.83</span>
+                            </div>
+                            <!-- Normal -->
+                            <div class="flex items-center">
+                                <span class="text-white font-medium w-28">Normal</span>
+                                <div class="flex-1 bg-gray-700 rounded-full h-4 mx-4">
+                                    <div class="bg-cyan-400 h-4 rounded-full" style="width: 82%"></div>
+                                </div>
+                                <span class="text-white font-bold text-lg">0.82</span>
+                            </div>
+                            <!-- Hypertension -->
+                            <div class="flex items-center">
+                                <span class="text-white font-medium w-28">Hypertension</span>
+                                <div class="flex-1 bg-gray-700 rounded-full h-4 mx-4">
+                                    <div class="bg-cyan-400 h-4 rounded-full" style="width: 79%"></div>
+                                </div>
+                                <span class="text-white font-bold text-lg">0.79</span>
+                            </div>
+                            <!-- Diabetes -->
+                            <div class="flex items-center">
+                                <span class="text-white font-medium w-28">Diabetes</span>
+                                <div class="flex-1 bg-gray-700 rounded-full h-4 mx-4">
+                                    <div class="bg-cyan-400 h-4 rounded-full" style="width: 77%"></div>
+                                </div>
+                                <span class="text-white font-bold text-lg">0.77</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tech Stack Section -->
+        <section id="tech" class="py-20 sm:py-32">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center reveal">
+                    <h2 class="text-base font-semibold tracking-wide uppercase text-cyan-400">Technology Stack</h2>
+                    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
+                        The Tools That Made It Possible
+                    </p>
+                    <p class="mt-4 max-w-2xl text-xl text-gray-300 lg:mx-auto">
+                        This project was built using a robust, industry-standard stack for data science.
+                    </p>
+                </div>
+                <div class="mt-16 reveal">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
+                        <!-- Python -->
+                        <div class="tech-icon glass-card p-6 flex flex-col items-center">
+                            <img src="https://placehold.co/80x80/0a1423/00d4ff?text=Python" alt="Python Logo" class="h-20 w-20" onerror="this.src='https://placehold.co/80x80/0a1423/00d4ff?text=Python'">
+                            <p class="mt-4 text-lg font-medium text-white">Python</p>
+                        </div>
+                        <!-- TensorFlow -->
+                        <div class="tech-icon glass-card p-6 flex flex-col items-center">
+                            <img src="https://placehold.co/80x80/0a1423/00d4ff?text=TensorFlow" alt="TensorFlow Logo" class="h-20 w-20" onerror="this.src='https://placehold.co/80x80/0a1423/00d4ff?text=TensorFlow'">
+                            <p class="mt-4 text-lg font-medium text-white">TensorFlow</p>
+                        </div>
+                        <!-- Keras -->
+                        <div class="tech-icon glass-card p-6 flex flex-col items-center">
+                            <img src="https://placehold.co/80x80/0a1423/00d4ff?text=Keras" alt="Keras Logo" class="h-20 w-20" onerror="this.src='https://placehold.co/80x80/0a1423/00d4ff?text=Keras'">
+                            <p class="mt-4 text-lg font-medium text-white">Keras</p>
+                        </div>
+                        <!-- DenseNet-121 -->
+                        <div class="tech-icon glass-card p-6 flex flex-col items-center">
+                            <img src="https://placehold.co/80x80/0a1423/00d4ff?text=DenseNet" alt="DenseNet-121 Logo" class="h-20 w-20" onerror="this.src='https://placehold.co/80x80/0a1423/00d4ff?text=DenseNet'">
+                            <p class="mt-4 text-lg font-medium text-white">DenseNet-121</p>
+                        </div>
+                        <!-- Pandas -->
+                        <div class="tech-icon glass-card p-6 flex flex-col items-center">
+                            <img src="https://placehold.co/80x80/0a1423/00d4ff?text=Pandas" alt="Pandas Logo" class="h-20 w-20" onerror="this.src='https://placehold.co/80x80/0a1423/00d4ff?text=Pandas'">
+                            <p class="mt-4 text-lg font-medium text-white">Pandas</p>
+                        </div>
+                        <!-- Scikit-Learn -->
+                        <div class="tech-icon glass-card p-6 flex flex-col items-center">
+                            <img src="https://placehold.co/80x80/0a1423/00d4ff?text=Scikit-Learn" alt="Scikit-Learn Logo" class="h-20 w-20" onerror="this.src='https://placehold.co/80x80/0a1423/00d4ff?text=Scikit-Learn'">
+                            <p class="mt-4 text-lg font-medium text-white">Scikit-Learn</p>
+                        </div>
+                        <!-- Jupyter -->
+                        <div class="tech-icon glass-card p-6 flex flex-col items-center">
+                            <img src="https://placehold.co/80x80/0a1423/00d4ff?text=Jupyter" alt="Jupyter Logo" class="h-20 w-20" onerror="this.src='https://placehold.co/80x80/0a1423/00d4ff?text=Jupyter'">
+                            <p class="mt-4 text-lg font-medium text-white">Jupyter</p>
+                        </div>
+                        <!-- Streamlit -->
+                        <div class="tech-icon glass-card p-6 flex flex-col items-center">
+                            <img src="https://placehold.co/80x80/0a1423/00d4ff?text=Streamlit" alt="Streamlit Logo" class="h-20 w-20" onerror="this.src='https://placehold.co/80x80/0a1423/00d4ff?text=Streamlit'">
+                            <p class="mt-4 text-lg font-medium text-white">Streamlit</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Team Section -->
+        <section id="team" class="py-20 sm:py-32 bg-gray-900/30">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center reveal">
+                    <h2 class="text-base font-semibold tracking-wide uppercase text-cyan-400">The Team</h2>
+                    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
+                        Meet the Engineers
+                    </p>
+                    <p class="mt-4 max-w-2xl text-xl text-gray-300 lg:mx-auto">
+                        This project was a collaborative effort by a 6-person team of data scientists from Moringa School.
+                    </p>
+                </div>
+                
+                <div class="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- UPDATED: Team cards are now links -->
+                    <!-- Jeff Munyaka Mogaka -->
+                    <a href="https://linkedin.com/in/jeff-mogaka" target="_blank" rel="noopener noreferrer" class="block glass-card p-8 text-center reveal glass-card-hover">
+                        <img class="h-24 w-24 rounded-full mx-auto shadow-lg border-2 border-cyan-400" 
+                             src="WhatsApp Image 2025-11-16 at 14.37.49_68a28c58.jpg" 
+                             alt="Jeff Munyaka Mogaka"
+                             onerror="this.src='https://placehold.co/96x96/0a1423/00d4ff?text=JM'">
+                        <h3 class="mt-4 text-xl font-bold text-white">Jeff Munyaka Mogaka</h3>
+                        <p class="mt-1 text-sm font-medium text-cyan-400">Data Scientist / Developer</p>
+                    </a>
+
+                    <!-- Kitts Kikumu -->
+                    <a href="https://linkedin.com/in/kitts-kikumu" target="_blank" rel="noopener noreferrer" class="block glass-card p-8 text-center reveal glass-card-hover">
+                        <img class="h-24 w-24 rounded-full mx-auto shadow-lg border-2 border-cyan-400" 
+                             src="https://placehold.co/96x96/0a1423/00d4ff?text=KK" 
+                             alt="Kitts Kikumu"
+                             onerror="this.src='https://placehold.co/96x96/0a1423/00d4ff?text=KK'">
+                        <h3 class="mt-4 text-xl font-bold text-white">Kitts Kikumu</h3>
+                        <p class="mt-1 text-sm font-medium text-cyan-400">Data Scientist / Analyst</p>
+                    </a>
+
+                    <!-- Kelvin Kinoti -->
+                    <a href="https://linkedin.com/in/kelvin-kinoti" target="_blank" rel="noopener noreferrer" class="block glass-card p-8 text-center reveal glass-card-hover">
+                        <img class="h-24 w-24 rounded-full mx-auto shadow-lg border-2 border-cyan-400" 
+                             src="https://placehold.co/96x96/0a1423/00d4ff?text=KK" 
+                             alt="Kelvin Kinoti"
+                             onerror="this.src='https://placehold.co/96x96/0a1423/00d4ff?text=KK'">
+                        <h3 class="mt-4 text-xl font-bold text-white">Kelvin Kinoti</h3>
+                        <p class="mt-1 text-sm font-medium text-cyan-400">Data Scientist / Developer</p>
+                    </a>
+
+                    <!-- Judith Otieno -->
+                    <a href="https://linkedin.com/in/judith-otieno" target="_blank" rel="noopener noreferrer" class="block glass-card p-8 text-center reveal glass-card-hover">
+                        <img class="h-24 w-24 rounded-full mx-auto shadow-lg border-2 border-cyan-400" 
+                             src="https://placehold.co/96x96/0a1423/00d4ff?text=JO" 
+                             alt="Judith Otieno"
+                             onerror="this.src='https://placehold.co/96x96/0a1423/00d4ff?text=JO'">
+                        <h3 class="mt-4 text-xl font-bold text-white">Judith Otieno</h3>
+                        <p class="mt-1 text-sm font-medium text-cyan-400">Data Scientist / Analyst</p>
+                    </a>
+
+                    <!-- Teresia Ndung'u -->
+                    <a href="https://linkedin.com/in/teresia-ndungu" target="_blank" rel="noopener noreferrer" class="block glass-card p-8 text-center reveal glass-card-hover">
+                        <img class="h-24 w-24 rounded-full mx-auto shadow-lg border-2 border-cyan-400" 
+                             src="https://placehold.co/96x96/0a1423/00d4ff?text=TN" 
+                             alt="Teresia Ndung'u"
+                             onerror="this.src='https://placehold.co/96x96/0a1423/00d4ff?text=TN'">
+                        <h3 class="mt-4 text-xl font-bold text-white">Teresia Ndung'u</h3>
+                        <p class="mt-1 text-sm font-medium text-cyan-400">Data Scientist / Analyst</p>
+                    </a>
+
+                    <!-- Fridah Njung'e -->
+                    <a href="https://linkedin.com/in/fridah-njunge" target="_blank" rel="noopener noreferrer" class="block glass-card p-8 text-center reveal glass-card-hover">
+                        <img class="h-24 w-24 rounded-full mx-auto shadow-lg border-2 border-cyan-400" 
+                             src="https://placehold.co/96x96/0a1423/00d4ff?text=FN" 
+                             alt="Fridah Njung'e"
+                             onerror="this.src='https://placehold.co/96x96/0a1423/00d4ff?text=FN'">
+                        <h3 class="mt-4 text-xl font-bold text-white">Fridah Njung'e</h3>
+                        <p class="mt-1 text-sm font-medium text-cyan-400">Data Scientist / Developer</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Future Work Section -->
+        <section id="future" class="py-20 sm:py-32">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center reveal">
+                    <h2 class="text-base font-semibold tracking-wide uppercase text-cyan-400">Future Work</h2>
+                    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
+                        Our Vision for What's Next
+                    </p>
+                    <p class="mt-4 max-w-2xl text-xl text-gray-300 lg:mx-auto">
+                        This project is a strong foundation. Our team has identified key areas for future improvement to create a truly clinical-grade system.
+                    </p>
+                </div>
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Future: Explainability -->
+                    <div class="glass-card p-8 reveal glass-card-hover">
+                        <h3 class="text-xl font-bold text-white mb-2">Implement Explainability (XAI)</h3>
+                        <p class="text-gray-300 mb-4">
+                            Integrate Grad-CAM visualizations to create "heatmaps" showing *which* pixels the model used to make its decision, increasing clinical trust and transparency.
+                        </p>
+                        <!-- NEW: Visual for XAI -->
+                        <div class="flex space-x-2">
+                            <img src="https://placehold.co/300x200/0a1423/FFF?text=Input:+Glaucoma" alt="Input Scan" class="w-1/2 rounded-lg border border-gray-600">
+                            <img src="https://placehold.co/300x200/0a1423/FFF?text=Heatmap:+Model+Focus" alt="Grad-CAM Heatmap" class="w-1/2 rounded-lg border border-cyan-400">
+                        </div>
+                    </div>
+                    <!-- Future: Severity -->
+                    <div class="glass-card p-8 reveal glass-card-hover">
+                        <h3 class="text-xl font-bold text-white mb-2">Add Severity Grading</h3>
+                        <p class="text-gray-300">
+                            Train new models to not only detect disease but to classify its severity (e.g., Mild, Moderate, or Severe Diabetic Retinopathy), providing more actionable insights.
+                        </p>
+                    </div>
+                    <!-- Future: Multi-Modal -->
+                    <div class="glass-card p-8 reveal glass-card-hover">
+                        <h3 class="text-xl font-bold text-white mb-2">Multi-Modal Architecture</h3>
+                        <p class="text-gray-300">
+                            Incorporate patient metadata (Age, Blood Pressure, HbA1c) alongside the image to create a holistic model that uses all available data for a more accurate diagnosis.
+                        </d>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900/30 border-t border-cyan-900">
+        <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+                <p class="text-gray-400">&copy; 2025 Ocular Vision Team (Moringa School Capstone)</p>
+                <a href="https://github.com/Jeanstarjb/ocular-disease-detection" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-300 font-medium mt-4 md:mt-0">
+                    View Project on GitHub &rarr;
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Neural Network Canvas Animation ---
+        const canvas = document.getElementById('neural-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        let mouse = {
+            x: null,
+            y: null,
+            radius: 100
+        };
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+        window.addEventListener('mouseout', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        // MOVED CLASS AND INIT FUNCTION HERE TO FIX REFERENCEERROR
+        class Particle {
+            constructor(x, y, dirX, dirY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.dirX = dirX;
+                this.dirY = dirY;
+                this.size = size;
+                this.color = color;
+                this.baseX = this.x;
+                this.baseY = this.y;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) this.dirX = -this.dirX;
+                if (this.y > canvas.height || this.y < 0) this.dirY = -this.dirY;
+
+                // Mouse interaction
+                if (mouse.x) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < mouse.radius) {
+                        // Push away
+                        this.x -= this.dirX * 3;
+                        this.y -= this.dirY * 3;
+                    } else {
+                        // Return to base
+                        if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 20;
+                        if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 20;
+                    }
+                } else {
+                     // Return to base
+                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 20;
+                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 20;
+                }
+
+                this.x += this.dirX;
+                this.y += this.dirY;
+                this.draw();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let num = (canvas.width * canvas.height) / 9000;
+            for (let i = 0; i < num; i++) {
+                let size = (Math.random() * 1.5) + 0.5;
+                let x = (Math.random() * ((canvas.width - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((canvas.height - size * 2) - (size * 2)) + size * 2);
+                let dirX = (Math.random() * 0.4) - 0.2;
+                let dirY = (Math.random() * 0.4) - 0.2;
+                let color = 'rgba(0, 212, 255, 0.7)';
+                particles.push(new Particle(x, y, dirX, dirY, size, color));
+            }
+        }
+        
+        // NOW IT'S SAFE TO DEFINE AND CALL RESIZECANVAS
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            if (canvas.width > 0 && canvas.height > 0) {
+                initParticles(); // Re-init particles on resize
+            }
+        }
+        window.addEventListener('resize', resizeCanvas);
+        // Initial call after a short delay to ensure canvas is ready
+        setTimeout(resizeCanvas, 10); 
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+            }
+            connect();
+        }
+
+        function connect() {
+            let opacity;
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let dx = particles[a].x - particles[b].x;
+                    let dy = particles[a].y - particles[b].y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 120) {
+                        opacity = 1 - (dist / 120);
+                        ctx.strokeStyle = `rgba(0, 190, 255, ${opacity})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+        
+        animate();
+
+
+        // --- Navbar transparency on scroll ---
+        const navbar = document.getElementById('navbar');
+        window.onscroll = () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('glass-card', 'bg-opacity-80', 'shadow-lg');
+            } else {
+                navbar.classList.remove('glass-card', 'bg-opacity-80', 'shadow-lg');
+            }
+        };
+
+        // --- Scroll Reveal Animation ---
+        const observerOptions = {
+            root: null,
+            rootMargin: "0px",
+            threshold: 0.2
+        };
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+    </script>
+</body>
+</html>
