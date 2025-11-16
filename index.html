@@ -108,9 +108,57 @@
                         View on GitHub
                     </a>
                 </div>
+                <!-- === MOBILE MENU BUTTON (ADDED) === -->
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" class="inline-flex items-center justify-center rounded-md bg-gray-800/50 p-2 text-cyan-400 hover:bg-gray-700/50 focus:outline-none focus:ring-2 focus:ring-cyan-400" aria-controls="mobile-menu" aria-expanded="false" id="mobile-menu-button">
+                        <span class="sr-only">Open main menu</span>
+                        <!-- Icon when menu is closed. -->
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+                        <!-- Icon when menu is open. -->
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
+
+    <!-- === MOBILE MENU DRAWER (ADDED) === -->
+    <div class="md:hidden hidden" id="mobile-menu">
+        <div class="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" aria-hidden="true"></div>
+        <div class="fixed top-4 right-4 z-50 w-full max-w-xs rounded-2xl bg-gray-900 p-6 shadow-lg ring-1 ring-white/10 glass-card">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-medium text-white">Navigation</h2>
+                <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" id="mobile-menu-close-button">
+                    <span class="sr-only">Close menu</span>
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="mt-6 flow-root">
+                <div class="-my-6 divide-y divide-gray-500/10">
+                    <div class="space-y-2 py-6">
+                        <a href="#problem" class="mobile-nav-link -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-800">The Problem</a>
+                        <a href="#solution" class="mobile-nav-link -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-800">The Solution</a>
+                        <a href="#demo" class="mobile-nav-link -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-800">Live Demos</a>
+                        <a href="#performance" class="mobile-nav-link -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-800">Performance</a>
+                        <a href="#tech" class="mobile-nav-link -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-800">Tech Stack</a>
+                        <a href="#team" class="mobile-nav-link -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-800">The Team</a>
+                        <a href="#future" class="mobile-nav-link -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-800">Next Steps</a>
+                    </div>
+                    <div class="py-6">
+                        <a href="https://github.com/Jeanstarjb/ocular-disease-detection" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center px-6 py-2 border border-cyan-400 text-sm font-medium rounded-full text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 transition-colors">
+                            View on GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main>
@@ -187,7 +235,7 @@
         <section id="solution" class="py-20 sm:py-32 bg-gray-900/30">
             <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="text-center reveal">
-                    <h2 class="text-base font-semibold tracking-wide uppercase text-cyan-400">The Solution</h2>
+                    <h2 class="text-base font-semibold tracking-wide uppercase text-cyan-400">Our Solution</h2>
                     <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
                         A Clinical Decision Support System (CDSS)
                     </p>
@@ -195,12 +243,13 @@
                         Our team engineered an end-to-end Machine Learning model that classifies retinal scans, identifying 8 distinct pathologies with high accuracy.
                     </p>
                 </div>
-
-                <!-- NEW: Model Architecture Diagram -->
+                
+                <!-- Model Architecture -->
                 <div class="mt-16 reveal">
                     <h3 class="text-2xl font-bold text-center text-white mb-8">Model Architecture</h3>
-                    <div class="glass-card p-8">
-                        <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                    <div class="glass-card p-8 overflow-x-auto">
+                        <!-- Added min-w-max to ensure it doesn't wrap awkwardly on small screens, allowing horizontal scroll if needed -->
+                        <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 min-w-max">
                             <!-- Input -->
                             <div class="flex flex-col items-center text-center">
                                 <div class="p-4 bg-cyan-900 border-2 border-cyan-400 rounded-lg">
@@ -208,7 +257,14 @@
                                 </div>
                                 <p class="text-sm text-cyan-400 mt-2">Input Image</p>
                             </div>
-                            <p class="text-3xl font-thin text-cyan-400">&rarr;</p>
+                            
+                            <!-- === ARROW FIX START === -->
+                            <!-- Mobile Arrow -->
+                            <p class="text-3xl font-thin text-cyan-400 md:hidden">&darr;</p>
+                            <!-- Desktop Arrow -->
+                            <p class="text-3xl font-thin text-cyan-400 hidden md:block">&rarr;</p>
+                            <!-- === ARROW FIX END === -->
+
                             <!-- Base Model -->
                             <div class="flex flex-col items-center text-center">
                                 <div class="p-4 bg-gray-800 border-2 border-gray-600 rounded-lg">
@@ -216,7 +272,14 @@
                                 </div>
                                 <p class="text-sm text-gray-400 mt-2">Transfer Learning</p>
                             </div>
-                            <p class="text-3xl font-thin text-cyan-400">&rarr;</p>
+
+                            <!-- === ARROW FIX START === -->
+                            <!-- Mobile Arrow -->
+                            <p class="text-3xl font-thin text-cyan-400 md:hidden">&darr;</p>
+                            <!-- Desktop Arrow -->
+                            <p class="text-3xl font-thin text-cyan-400 hidden md:block">&rarr;</p>
+                            <!-- === ARROW FIX END === -->
+                            
                             <!-- Head -->
                             <div class="flex flex-col items-center text-center">
                                 <div class="p-4 bg-gray-800 border-2 border-gray-600 rounded-lg">
@@ -224,7 +287,14 @@
                                 </div>
                                 <p class="text-sm text-gray-400 mt-2">Classification Head</p>
                             </div>
-                            <p class="text-3xl font-thin text-cyan-400">&rarr;</p>
+
+                            <!-- === ARROW FIX START === -->
+                            <!-- Mobile Arrow -->
+                            <p class="text-3xl font-thin text-cyan-400 md:hidden">&darr;</p>
+                            <!-- Desktop Arrow -->
+                            <p class="text-3xl font-thin text-cyan-400 hidden md:block">&rarr;</p>
+                            <!-- === ARROW FIX END === -->
+                            
                             <!-- Output -->
                             <div class="flex flex-col items-center text-center">
                                 <div class="p-4 bg-green-900 border-2 border-green-400 rounded-lg">
@@ -450,17 +520,17 @@
                         </div>
                         <!-- Scikit-Learn -->
                         <div class="tech-icon glass-card p-6 flex flex-col items-center">
-                            <img src="https://placehold.co/80x80/0a1423/00d4ff?text=Scikit-Learn" alt="Scikit-Learn Logo" class="h-20 w-20" onerror="this.src='https://placehold.co/80x80/0a1423/00d4ff?text=Scikit-Learn'">
+                            <img src="https.placehold.co/80x80/0a1423/00d4ff?text=Scikit-Learn" alt="Scikit-Learn Logo" class="h-20 w-20" onerror="this.src='https://placehold.co/80x80/0a1423/00d4ff?text=Scikit-Learn'">
                             <p class="mt-4 text-lg font-medium text-white">Scikit-Learn</p>
                         </div>
                         <!-- Jupyter -->
                         <div class="tech-icon glass-card p-6 flex flex-col items-center">
-                            <img src="https://placehold.co/80x80/0a1423/00d4ff?text=Jupyter" alt="Jupyter Logo" class="h-20 w-20" onerror="this.src='https://placehold.co/80x80/0a1423/00d4ff?text=Jupyter'">
+                            <img src="https.placehold.co/80x80/0a1423/00d4ff?text=Jupyter" alt="Jupyter Logo" class="h-20 w-20" onerror="this.src='https://placehold.co/80x80/0a1423/00d4ff?text=Jupyter'">
                             <p class="mt-4 text-lg font-medium text-white">Jupyter</p>
                         </div>
                         <!-- Streamlit -->
                         <div class="tech-icon glass-card p-6 flex flex-col items-center">
-                            <img src="https://placehold.co/80x80/0a1423/00d4ff?text=Streamlit" alt="Streamlit Logo" class="h-20 w-20" onerror="this.src='https://placehold.co/80x80/0a1423/00d4ff?text=Streamlit'">
+                            <img src="https.placehold.co/80x80/0a1423/00d4ff?text=Streamlit" alt="Streamlit Logo" class="h-20 w-20" onerror="this.src='https://placehold.co/80x80/0a1423/00d4ff?text=Streamlit'">
                             <p class="mt-4 text-lg font-medium text-white">Streamlit</p>
                         </div>
                     </div>
@@ -486,7 +556,7 @@
                     <!-- Jeff Munyaka Mogaka -->
                     <a href="https://linkedin.com/in/jeff-mogaka" target="_blank" rel="noopener noreferrer" class="block glass-card p-8 text-center reveal glass-card-hover">
                         <img class="h-24 w-24 rounded-full mx-auto shadow-lg border-2 border-cyan-400" 
-                             src="WhatsApp Image 2025-11-16 at 14.37.49_68a28c58.jpg" 
+                             src="https://github.com/Jeanstarjb/Ocular-Disease-Detection-web-report/blob/main/images/WhatsApp%20Image%202025-11-16%20at%2014.37.49_68a28c58.jpg?raw=true" 
                              alt="Jeff Munyaka Mogaka"
                              onerror="this.src='https://placehold.co/96x96/0a1423/00d4ff?text=JM'">
                         <h3 class="mt-4 text-xl font-bold text-white">Jeff Munyaka Mogaka</h3>
@@ -583,7 +653,7 @@
                         <h3 class="text-xl font-bold text-white mb-2">Multi-Modal Architecture</h3>
                         <p class="text-gray-300">
                             Incorporate patient metadata (Age, Blood Pressure, HbA1c) alongside the image to create a holistic model that uses all available data for a more accurate diagnosis.
-                        </d>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -604,26 +674,7 @@
     </footer>
 
     <script>
-        // --- Neural Network Canvas Animation ---
-        const canvas = document.getElementById('neural-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        let mouse = {
-            x: null,
-            y: null,
-            radius: 100
-        };
-        window.addEventListener('mousemove', (event) => {
-            mouse.x = event.x;
-            mouse.y = event.y;
-        });
-        window.addEventListener('mouseout', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
-
-        // MOVED CLASS AND INIT FUNCTION HERE TO FIX REFERENCEERROR
+        // --- Particle Class Definition (MOVED TO TOP) ---
         class Particle {
             constructor(x, y, dirX, dirY, size, color) {
                 this.x = x;
@@ -670,10 +721,22 @@
                 this.draw();
             }
         }
+        
+        // --- Global Variables for Canvas ---
+        const canvas = document.getElementById('neural-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = {
+            x: null,
+            y: null,
+            radius: 100
+        };
 
+        // --- Particle Functions ---
         function initParticles() {
             particles = [];
             let num = (canvas.width * canvas.height) / 9000;
+            if (num > 150) num = 150; // Cap particle count
             for (let i = 0; i < num; i++) {
                 let size = (Math.random() * 1.5) + 0.5;
                 let x = (Math.random() * ((canvas.width - size * 2) - (size * 2)) + size * 2);
@@ -685,28 +748,6 @@
             }
         }
         
-        // NOW IT'S SAFE TO DEFINE AND CALL RESIZECANVAS
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            if (canvas.width > 0 && canvas.height > 0) {
-                initParticles(); // Re-init particles on resize
-            }
-        }
-        window.addEventListener('resize', resizeCanvas);
-        // Initial call after a short delay to ensure canvas is ready
-        setTimeout(resizeCanvas, 10); 
-
-        function animate() {
-            requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-            }
-            connect();
-        }
-
         function connect() {
             let opacity;
             for (let a = 0; a < particles.length; a++) {
@@ -727,8 +768,41 @@
                 }
             }
         }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+            }
+            connect();
+        }
         
-        animate();
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            mouse.radius = (canvas.width / 80) * (canvas.height / 80);
+            if (mouse.radius > 250) mouse.radius = 250;
+            if (canvas.width > 0 && canvas.height > 0) {
+                initParticles(); // Re-init particles on resize
+            }
+        }
+
+        // --- Event Listeners ---
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+        window.addEventListener('mouseout', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+        window.addEventListener('resize', resizeCanvas);
+        
+        // --- Initialization ---
+        // Initial call after a short delay to ensure canvas is ready
+        setTimeout(resizeCanvas, 10); 
+        animate(); // Start animation loop
 
 
         // --- Navbar transparency on scroll ---
@@ -759,6 +833,33 @@
 
         document.querySelectorAll('.reveal').forEach(el => {
             revealObserver.observe(el);
+        });
+
+        // --- (ADDED) Mobile Menu Toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenuCloseButton = document.getElementById('mobile-menu-close-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        const toggleMenu = () => {
+            mobileMenu.classList.toggle('hidden');
+            // Toggle hamburger icons
+            const openIcon = mobileMenuButton.querySelector('svg.block');
+            const closeIcon = mobileMenuButton.querySelector('svg.hidden');
+            openIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        };
+
+        mobileMenuButton.addEventListener('click', toggleMenu);
+        mobileMenuCloseButton.addEventListener('click', toggleMenu);
+
+        // Close menu when a link is clicked
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    toggleMenu();
+                }
+            });
         });
 
     </script>
